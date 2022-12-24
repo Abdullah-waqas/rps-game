@@ -7,6 +7,7 @@ import PlayerVsComputer from './Screens/PlayerVsComputer/PlayerVsComputer';
 import { GAME_STATE } from './types';
 import WelcomScreen from './Screens/WelcomeScreen/WelcomScreen';
 
+
 function App() {
   const [mode, setMode] = React.useState<GAME_STATE>(WELCOME_SCREEN);
 

@@ -2,6 +2,8 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+[![codecov](https://codecov.io/gh/Abdullah-waqas/rps-game/branch/master/graph/badge.svg?token=67LBrlmI1R)](https://codecov.io/gh/Abdullah-waqas/rps-game)
+
 ## Available Scripts
 
 In the project directory, you can run:
