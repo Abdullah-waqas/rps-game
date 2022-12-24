@@ -81,4 +81,29 @@ describe('<ComputerVsComputer />', () => {
     expect(gameResult.textContent).toEqual('Result: Computer win');
     getRandomOptionMock.mockRestore();
   });
+  it('should win Human', () => {
+    const setModeSpy = jest.fn();
+    const getRandomOptionMock = jest
+      .spyOn(method, 'getRandomOption')
+      .mockReturnValue({ value1: ROCK, value2: PAPER });
+    render(<PlayerVsComputer setMode={setModeSpy} />);
+    const paperBtn = screen.getByTestId('test-paper_btn');
+    userEvent.click(paperBtn);
+    const gameResult = screen.getByTestId('game-result');
+    expect(gameResult.textContent).toEqual('Result: Human win');
+    getRandomOptionMock.mockRestore();
+  });
+
+  it('should win Computer', () => {
+    const setModeSpy = jest.fn();
+    const getRandomOptionMock = jest
+      .spyOn(method, 'getRandomOption')
+      .mockReturnValue({ value1: ROCK, value2: PAPER });
+    render(<PlayerVsComputer setMode={setModeSpy} />);
+    const paperBtn = screen.getByTestId('test-scissor_btn');
+    userEvent.click(paperBtn);
+    const gameResult = screen.getByTestId('game-result');
+    expect(gameResult.textContent).toEqual('Result: Computer win');
+    getRandomOptionMock.mockRestore();
+  });
 });
