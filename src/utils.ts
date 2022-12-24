@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { OPTIONS_LIST, PAPER, ROCK, SCISSOR } from './constants';
 import { GetMatchResultType, GetRandomOptionType, PLAYER_SELECTION_TYPE } from './types';
 
