@@ -43,6 +43,19 @@ describe('<ComputerVsComputer />', () => {
     getRandomOptionMock.mockRestore();
   });
 
+  it('should tie the game', () => {
+    const setModeSpy = jest.fn();
+    const getRandomOptionMock = jest
+      .spyOn(method, 'getRandomOption')
+      .mockReturnValue({ value1: ROCK, value2: PAPER });
+    render(<PlayerVsComputer setMode={setModeSpy} />);
+    const rockBtn = screen.getByTestId('test-rock_btn');
+    userEvent.click(rockBtn);
+    const gameResult = screen.getByTestId('game-result');
+    expect(gameResult.textContent).toEqual('Result: Tie');
+    getRandomOptionMock.mockRestore();
+  });
+
   it('should win Human', () => {
     const setModeSpy = jest.fn();
     const getRandomOptionMock = jest
