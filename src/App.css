@@ -1,0 +1,36 @@
+:root {
+  --control: #e69119;
+  --color: #fff;
+}
+body {
+  background: linear-gradient(#d1e9fa 0 40%, #86c270 40%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fredoka One', cursive;
+}
+
+header,
+h1,
+h2 {
+  text-align: center;
+  width: 100%;
+}
+
+button {
+  background: var(--control);
+  color: var(--color);
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  border: 4px solid var(--color);
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.2rem;
+  margin: 0.5rem;
+}
+.button-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
