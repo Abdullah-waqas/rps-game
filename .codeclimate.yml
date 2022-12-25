@@ -17,3 +17,18 @@ plugins:
 exclude_patterns:
   - node_modules/
   - '**/__tests__/'
+  - 'config/'
+  - 'db/'
+  - 'dist/'
+  - 'features/'
+  - '**/node_modules/'
+  - 'script/'
+  - '**/spec/'
+  - '**/test/'
+  - '**/tests/'
+  - 'Tests/'
+  - '**/vendor/'
+  - '**/*_test.go'
+  - '**/*.d.ts'
+  - '**/*.d.ts'
+  - '**/*.eslintrc.json'
