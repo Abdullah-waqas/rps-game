@@ -93,4 +93,6 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - upload_coverage
+      - upload_coverage:
+          requires:
+            - build
