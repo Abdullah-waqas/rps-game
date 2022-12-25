@@ -49,8 +49,8 @@ jobs:
           file: './coverage/clover.xml'
 
   upload_coverage:
-    docker:
-      - image: node:16.13.2
+    # docker:
+    #   - image: node:16.13.2
 
     working_directory: ~/repo
     steps:
