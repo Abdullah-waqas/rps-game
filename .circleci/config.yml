@@ -49,8 +49,9 @@ jobs:
           file: './coverage/clover.xml'
 
   upload_coverage:
-    - codecov/upload:
-        file: './coverage/clover.xml'
+    steps:
+      - codecov/upload:
+          file: './coverage/clover.xml'
 
 workflows:
   version: 2
