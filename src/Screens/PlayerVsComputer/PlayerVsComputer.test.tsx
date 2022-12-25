@@ -94,6 +94,7 @@ describe('<ComputerVsComputer />', () => {
     getRandomOptionMock.mockRestore();
   });
 
+
   it('should win Computer', () => {
     const setModeSpy = jest.fn();
     const getRandomOptionMock = jest
