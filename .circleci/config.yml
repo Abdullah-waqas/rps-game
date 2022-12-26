@@ -98,6 +98,6 @@ workflows:
     jobs:
       - build
       - upload_coverage:
-          type: approval
+          # type: approval
           requires:
             - build
