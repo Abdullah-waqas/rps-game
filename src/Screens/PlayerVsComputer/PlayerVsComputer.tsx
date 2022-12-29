@@ -12,7 +12,12 @@ const PlayerVsComputer: FC<PlayerVsComputerType> = ({ setMode }) => {
 
   const play = (option: PLAYER_SELECTION_TYPE) => {
     const randomOptions = getRandomOption();
-    const result = getMatch(option, randomOptions.value1, 'Human', 'Computer');
+    const result = getMatch({
+      playerASelection: option,
+      playerBSelection: randomOptions.value1,
+      playerAName: 'Human',
+      playerBName: 'Computer',
+    });
     setResult(result);
   };
 

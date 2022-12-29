@@ -18,12 +18,12 @@ const ComputerVsComputer: FC<ComputerVsComputerType> = ({ setMode }) => {
 
   const getPlayerResults = () => {
     const randomOptions = getRandomOption();
-    const result: GetMatchResultType = getMatch(
-      randomOptions.value1,
-      randomOptions.value2,
-      'Computer 1',
-      'Computer 2',
-    );
+    const result: GetMatchResultType = getMatch({
+      playerASelection: randomOptions.value1,
+      playerBSelection: randomOptions.value2,
+      playerAName: 'Computer 1',
+      playerBName: 'Computer 2',
+    });
     setResult(result);
   };
   return (

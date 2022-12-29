@@ -8,6 +8,13 @@ export type PAPER = 'PAPER';
 export type SCISSOR = 'SCISSOR';
 export type PLAYER_SELECTION_TYPE = ROCK | PAPER | SCISSOR;
 
+export interface getMatchProps {
+  playerASelection: PLAYER_SELECTION_TYPE;
+  playerBSelection: PLAYER_SELECTION_TYPE;
+  playerAName: string;
+  playerBName: string;
+}
+
 export interface GetMatchResultType {
   status: string;
   playerASelection: PLAYER_SELECTION_TYPE;
