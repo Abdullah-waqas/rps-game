@@ -4,9 +4,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 [![codecov](https://codecov.io/gh/Abdullah-waqas/rps-game/branch/master/graph/badge.svg?token=67LBrlmI1R)](https://codecov.io/gh/Abdullah-waqas/rps-game)
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/8ba1e4aa7d5362b4c61c/maintainability)](https://codeclimate.com/github/Abdullah-waqas/rps-game/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/509e352b30a6f1d7cc3b/maintainability)](https://codeclimate.com/github/Abdullah-waqas/rps-game/maintainability)
 
-[![Test Coverage](https://api.codeclimate.com/v1/badges/8ba1e4aa7d5362b4c61c/test_coverage)](https://codeclimate.com/github/Abdullah-waqas/rps-game/test_coverage)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/509e352b30a6f1d7cc3b/test_coverage)](https://codeclimate.com/github/Abdullah-waqas/rps-game/test_coverage)
 
 ## Available Scripts
 

@@ -1,7 +1,12 @@
 /* istanbul ignore file */
 
 import { OPTIONS_LIST, PAPER, ROCK, SCISSOR } from './constants';
-import { GetMatchResultType, GetRandomOptionType, PLAYER_SELECTION_TYPE } from './types';
+import {
+  GetMatchResultType,
+  GetRandomOptionType,
+  PLAYER_SELECTION_TYPE,
+  getMatchProps,
+} from './types';
 
 export function getRandomOption(): GetRandomOptionType {
   return {
@@ -22,12 +27,12 @@ function generateStatus(
   };
 }
 
-export function getMatch(
-  playerASelection: PLAYER_SELECTION_TYPE,
-  playerBSelection: PLAYER_SELECTION_TYPE,
-  playerAName: string,
-  playerBName: string,
-): GetMatchResultType {
+export function getMatch({
+  playerASelection,
+  playerBSelection,
+  playerAName,
+  playerBName,
+}: getMatchProps): GetMatchResultType {
   if (playerASelection === playerBSelection) {
     return generateStatus('Tie', playerASelection, playerBSelection);
   } else {
