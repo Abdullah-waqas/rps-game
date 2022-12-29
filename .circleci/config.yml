@@ -89,6 +89,8 @@ jobs:
       #       npm run test:coverage
       #       ./cc-test-reporter after-build --exit-code $?
 
+      - run: npm run test:coverage
+
       - run: # run tests
           name: Run Test and Coverage
           command: |
@@ -102,12 +104,12 @@ jobs:
       # - codecov/upload:
       #     file: './coverage/clover.xml'
 
-workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - build
-      - upload_coverage:
-          # type: approval
-          requires:
-            - build
+# workflows:
+#   version: 2
+#   build_and_test:
+#     jobs:
+#       - build
+#       - upload_coverage:
+#           # type: approval
+#           requires:
+#             - build
