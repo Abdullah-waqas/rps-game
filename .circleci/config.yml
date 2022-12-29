@@ -38,15 +38,15 @@ jobs:
 
       # - run: npm run test:coverage
 
-      - run: # run tests
-          name: Run Test and Coverage
-          command: |
-            ./cc-test-reporter before-build
-            npm run test:coverage
-            ./cc-test-reporter after-build --exit-code $?
+      # - run: # run tests
+      #     name: Run Test and Coverage
+      #     command: |
+      #       ./cc-test-reporter before-build
+      #       npm run test:coverage
+      #       ./cc-test-reporter after-build --exit-code $?
 
-      - codecov/upload:
-          file: './coverage/clover.xml'
+      # - codecov/upload:
+      #     file: './coverage/clover.xml'
 
   upload_coverage:
     docker:
@@ -89,8 +89,18 @@ jobs:
       #       npm run test:coverage
       #       ./cc-test-reporter after-build --exit-code $?
 
+      - run: # run tests
+          name: Run Test and Coverage
+          command: |
+            ./cc-test-reporter before-build
+            npm run test:coverage
+            ./cc-test-reporter after-build --exit-code $?
+
       - codecov/upload:
           file: './coverage/clover.xml'
+
+      # - codecov/upload:
+      #     file: './coverage/clover.xml'
 
 workflows:
   version: 2
