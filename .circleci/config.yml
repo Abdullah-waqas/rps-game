@@ -36,26 +36,6 @@ jobs:
       - run: npm run test
       - run: npm run build
 
-      # - run: npm run test:coverage
-
-      # - run: # run tests
-      #     name: Run Test and Coverage
-      #     command: |
-      #       ./cc-test-reporter before-build
-      #       npm run test:coverage
-      #       ./cc-test-reporter after-build --exit-code $?
-
-      # - codecov/upload:
-      #     file: './coverage/clover.xml'
-
-  upload_coverage:
-    docker:
-      - image: node:16.13.2
-
-    working_directory: ~/repo
-    steps:
-      - checkout
-
       - run: npm run test:coverage
 
       # - run: # run tests
@@ -65,24 +45,44 @@ jobs:
       #       npm run test:coverage
       #       ./cc-test-reporter after-build --exit-code $?
 
+      - codecov/upload:
+          file: './coverage/clover.xml'
+
+  # upload_coverage:
+  #   docker:
+  #     - image: node:16.13.2
+
+  #   working_directory: ~/repo
+  #   steps:
+  #     - checkout
+
+  #     - run: npm run test:coverage
+
+      # - run: # run tests
+      #     name: Run Test and Coverage
+      #     command: |
+      #       ./cc-test-reporter before-build
+      #       npm run test:coverage
+      #       ./cc-test-reporter after-build --exit-code $?
+
       # - codecov/upload:
       #     file: './coverage/clover.xml'
 
-      - run:
-          name: Setup Code Climate test-reporter
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
+      # - run:
+      #     name: Setup Code Climate test-reporter
+      #     command: |
+      #       curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+      #       chmod +x ./cc-test-reporter
 
-      - run:
-          name: Run Test and Coverage
-          command: |
-            ./cc-test-reporter before-build
-            npm run test:coverage
-            ./cc-test-reporter after-build --exit-code $?
+      # - run:
+      #     name: Run Test and Coverage
+      #     command: |
+      #       ./cc-test-reporter before-build
+      #       npm run test:coverage
+      #       ./cc-test-reporter after-build --exit-code $?
 
-      - codecov/upload:
-          file: './coverage/clover.xml'
+      # - codecov/upload:
+      #     file: './coverage/clover.xml'
       # - codecov/upload:
       #     file: './coverage/clover.xml'
 # workflows:
