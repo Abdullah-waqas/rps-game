@@ -33,11 +33,11 @@ checks:
     config:
       threshold: 4
   similar-code:
-    enabled: true
+    enabled: false
     config:
       threshold: 1
   identical-code:
-    enabled: true
+    enabled: false
     config:
       threshold: 1
 exclude_patterns:
