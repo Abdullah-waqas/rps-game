@@ -48,12 +48,12 @@ jobs:
           ./cc-test-reporter before-build
         when: always
       - run:
-          name: Send coverage report to Code Climate
-          command:
-            # nyc report requires that nyc has already been run,
-            # which creates the .nyc_output folder containing necessary data
-            ./cc-test-reporter after-build -t lcov
-          when: always
+        name: Send coverage report to Code Climate
+        command:
+          # nyc report requires that nyc has already been run,
+          # which creates the .nyc_output folder containing necessary data
+          ./cc-test-reporter after-build -t lcov
+        when: always
 
       # - run: # run tests
       #     name: Run Test and Coverage
