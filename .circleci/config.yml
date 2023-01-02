@@ -26,12 +26,18 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # run tests!
-      - run: npm run lint
-      - run: npm run test
-      - run: npm run build
-
-      - run: npm run test:coverage
+      - run:
+          name: Run Lint
+          command: npm run lint
+      - run:
+          name: Run Tests
+          command: npm run test
+      - run:
+          name: Run Build
+          command: npm run build
+      - run:
+          name: Generate Coverage Report
+          command: npm run test:coverage
 
       # Run coverage report for Code Climate
       - run:
