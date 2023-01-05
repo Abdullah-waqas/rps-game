@@ -60,9 +60,16 @@ jobs:
           name: ECHO
           command: |
             echo "This is pipeline ID << pipeline.id >>"
-            echo "This is pipeline ID << pipeline.number >>"
-            echo "This is pipeline ID << pipeline.project.git_url >>"
-            echo "This is pipeline ID << pipeline >>"
+            echo "This is pipeline number << pipeline.number >>"
+            echo "This is pipeline git url << pipeline.project.git_url >>"
+            echo "This is pipeline type << pipeline.project.type >>"
+            echo "This is pipeline git tag << pipeline.git.tag >>"
+            echo "This is pipeline branch << pipeline.git.branch >>"
+            echo "This is pipeline revision << pipeline.git.revision >>"
+            echo "This is pipeline in_setup << pipeline.in_setup >>"
+            echo "This is pipeline trigger_source << pipeline.trigger_source >>"
+            echo "This is pipeline schedule name << pipeline.schedule.name >>"
+            echo "This is pipeline schedule id << pipeline.schedule.id >>"
 
       - codecov/upload:
           file: './coverage/clover.xml'
