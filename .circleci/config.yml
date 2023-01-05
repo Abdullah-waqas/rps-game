@@ -56,6 +56,13 @@ jobs:
             ./cc-test-reporter after-build -t lcov
           when: always
 
+      - run:
+          name: ECHO
+          command: |
+            echo "This is pipeline ID << pipeline.id >>"
+            echo "This is pipeline ID << pipeline.number >>"
+            echo "This is pipeline ID << pipeline.project.git_url >>"
+
       - codecov/upload:
           file: './coverage/clover.xml'
 
