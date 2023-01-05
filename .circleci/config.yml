@@ -62,6 +62,7 @@ jobs:
             echo "This is pipeline ID << pipeline.id >>"
             echo "This is pipeline ID << pipeline.number >>"
             echo "This is pipeline ID << pipeline.project.git_url >>"
+            echo "This is pipeline ID << pipeline >>"
 
       - codecov/upload:
           file: './coverage/clover.xml'
