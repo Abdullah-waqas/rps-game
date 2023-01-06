@@ -56,5 +56,67 @@ jobs:
             ./cc-test-reporter after-build -t lcov
           when: always
 
+      - run:
+          name: ECHO
+          command: |
+            echo "This is pipeline ID << pipeline.id >>"
+            echo "This is pipeline number << pipeline.number >>"
+            echo "This is pipeline git url << pipeline.project.git_url >>"
+            echo "This is pipeline type << pipeline.project.type >>"
+            echo "This is pipeline git tag << pipeline.git.tag >>"
+            echo "This is pipeline branch << pipeline.git.branch >>"
+            echo "This is pipeline revision << pipeline.git.revision >>"
+            echo "This is pipeline in_setup << pipeline.in_setup >>"
+            echo "This is pipeline trigger_source << pipeline.trigger_source >>"
+            echo "This is pipeline schedule name << pipeline.schedule.name >>"
+            echo "This is pipeline schedule id << pipeline.schedule.id >>"
+
       - codecov/upload:
           file: "./coverage/clover.xml"
+
+  # upload_coverage:
+  #   docker:
+  #     - image: node:16.13.2
+
+  #   working_directory: ~/repo
+  #   steps:
+  #     - checkout
+
+  #     - run: npm run test:coverage
+
+  # - run: # run tests
+  #     name: Run Test and Coverage
+  #     command: |
+  #       ./cc-test-reporter before-build
+  #       npm run test:coverage
+  #       ./cc-test-reporter after-build --exit-code $?
+
+  # - codecov/upload:
+  #     file: './coverage/clover.xml'
+
+  # - run:
+  #     name: Setup Code Climate test-reporter
+  #     command: |
+  #       curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  #       chmod +x ./cc-test-reporter
+
+  # - run:
+  #     name: Run Test and Coverage
+  #     command: |
+  #       ./cc-test-reporter before-build
+  #       npm run test:coverage
+  #       ./cc-test-reporter after-build --exit-code $?
+
+  # - codecov/upload:
+  #     file: './coverage/clover.xml'
+  # - codecov/upload:
+  #     file: './coverage/clover.xml'
+# workflows:
+#   version: 2
+#   build_and_test:
+#     jobs:
+#       - build
+#       - upload_coverage:
+#           # type: approval
+#           requires:
+#             - build
