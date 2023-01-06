@@ -76,10 +76,10 @@ jobs:
   notify:
     docker:
       - image: node:16.13.2
-      # - image: 'cimg/base:stable'
-      #   auth:
-      #     username: mydockerhub-user
-      #     password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      - image: 'cimg/base:stable'
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - slack/notify:
           custom: |
