@@ -84,6 +84,7 @@ jobs:
       - slack/notify:
           channel: 'alerts, games'
           event: pass
+          mentions: "@here"
           template: basic_success_1
           # custom: |
           #   {
