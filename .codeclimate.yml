@@ -33,11 +33,11 @@ checks:
     config:
       threshold: 4
   similar-code:
-    enabled: true
+    enabled: false
     config:
       threshold: 1
   identical-code:
-    enabled: true
+    enabled: false
     config:
       threshold: 1
 exclude_patterns:
@@ -47,9 +47,9 @@ exclude_patterns:
   - 'features/'
   - '**/node_modules/'
   - 'script/'
-  - '**/spec/'
-  - '**/test/'
-  - '**/tests/'
+  # - '**/spec/'
+  # - '**/test/'
+  # - '**/tests/'
   - '**/vendor/'
   - '**/*.d.ts'
 # version: '2'

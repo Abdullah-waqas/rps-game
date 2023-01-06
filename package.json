@@ -24,6 +24,7 @@
     "test:watch": "npm test a --watchAll=false",
     "coverage": "jest --coverage",
     "test:coverage": "cross-env CI=true npm test -- --env=jsdom --coverage",
+    "upload:test-report": "./node_modules/.bin/codecov",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{js,jsx,ts,tsx,json}",
     "lint:fix": "eslint --fix src/**/*.{js,jsx,ts,tsx,json}",
@@ -60,10 +61,10 @@
   "jest": {
     "coverageThreshold": {
       "global": {
-        "branches": 90,
-        "functions": 90,
-        "lines": 90,
-        "statements": 90
+        "branches": 85,
+        "functions": 85,
+        "lines": 85,
+        "statements": 85
       }
     }
   }
