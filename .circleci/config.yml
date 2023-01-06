@@ -7,7 +7,7 @@ jobs:
       - image: "cimg/base:stable"
     steps:
       - slack/notify:
-          channel: 'alerts'
+          channel: 'alerts, games'
           custom: |
             {
               "blocks": [
