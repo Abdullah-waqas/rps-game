@@ -75,7 +75,7 @@ jobs:
 
   notify:
     docker:
-      - image: node:16.13.2
+      # - image: node:16.13.2
       - image: 'cimg/base:stable'
         auth:
           username: mydockerhub-user
