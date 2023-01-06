@@ -73,6 +73,14 @@ jobs:
       - codecov/upload:
           file: "./coverage/clover.xml"
 
+  notify:
+    docker:
+      - image: node:16.13.2
+      # - image: 'cimg/base:stable'
+      #   auth:
+      #     username: mydockerhub-user
+      #     password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
       - slack/notify:
           custom: |
             {
@@ -91,11 +99,12 @@ jobs:
             }
           event: always
 
+
 workflows:
   send-notification:
     jobs:
       - build
-      - slack/notify:
+      - notify:
           context: slack-secrets
 
   # upload_coverage:
