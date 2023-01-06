@@ -95,7 +95,7 @@ workflows:
   send-notification:
     jobs:
       - build
-      - notify:
+      - slack/notify:
           context: slack-secrets
 
   # upload_coverage:
