@@ -99,12 +99,13 @@ jobs:
             }
           event: always
 
-
 workflows:
   send-notification:
     jobs:
       - build
       - notify:
+          requires:
+            - build
           context: slack-secrets
 
   # upload_coverage:
