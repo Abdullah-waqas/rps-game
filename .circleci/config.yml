@@ -2,6 +2,7 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.0
   codecov: codecov/codecov@3
+  slack: circleci/slack@4.9.3
 jobs:
   build:
     docker:
@@ -71,6 +72,31 @@ jobs:
 
       - codecov/upload:
           file: "./coverage/clover.xml"
+
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "plain_text",
+                      "text": "*This is a text notification*",
+                      "emoji": true
+                    }
+                  ]
+                }
+              ]
+            }
+          event: always
+
+workflows:
+  send-notification:
+    jobs:
+      - build
+      - notify:
+          context: slack-secrets
 
   # upload_coverage:
   #   docker:
