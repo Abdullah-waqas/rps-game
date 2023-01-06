@@ -2,6 +2,8 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/Abdullah-waqas/rps-game/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Abdullah-waqas/rps-game/tree/master)
+
 [![codecov](https://codecov.io/gh/Abdullah-waqas/rps-game/branch/master/graph/badge.svg?token=67LBrlmI1R)](https://codecov.io/gh/Abdullah-waqas/rps-game)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/509e352b30a6f1d7cc3b/maintainability)](https://codeclimate.com/github/Abdullah-waqas/rps-game/maintainability)
