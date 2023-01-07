@@ -11,10 +11,10 @@ executors:
 
   notify:
     docker:
-      - image: 'cimg/base:stable'
+      - image: "cimg/base:stable"
         auth:
           username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+          password: $DOCKERHUB_PASSWORD # context / project UI env-var reference
 
 references:
   container_config: &container_config
@@ -26,7 +26,7 @@ references:
     working_directory: ~/repo
 
 jobs:
-  build:
+  install:
     # docker:
     #   - image: node:16.13.2
 
@@ -50,20 +50,83 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
+      # - run:
+      #     name: Run Lint
+      #     command: npm run lint
+      # - run:
+      #     name: Run Tests
+      #     command: npm run test
+      # - run:
+      #     name: Run Build
+      #     command: npm run build
+      # - run:
+      #     name: Generate Coverage Report
+      #     command: npm run test:coverage
+
+      # # Run coverage report for Code Climate
+      # - run:
+      #     name: Setup Code Climate test-reporter
+      #     command: |
+      #       # download test reporter as a static binary
+      #       curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+      #       chmod +x ./cc-test-reporter
+      #       ./cc-test-reporter before-build
+      # - run:
+      #     name: Send coverage report to Code Climate
+      #     command:
+      #       # nyc report requires that nyc has already been run,
+      #       # which creates the .nyc_output folder containing necessary data
+      #       ./cc-test-reporter after-build -t lcov
+
+      # - run:
+      #     name: ECHO
+      #     command: |
+      #       echo "This is pipeline ID << pipeline.id >>"
+      #       echo "This is pipeline number << pipeline.number >>"
+      #       echo "This is pipeline git url << pipeline.project.git_url >>"
+      #       echo "This is pipeline type << pipeline.project.type >>"
+      #       echo "This is pipeline git tag << pipeline.git.tag >>"
+      #       echo "This is pipeline branch << pipeline.git.branch >>"
+      #       echo "This is pipeline revision << pipeline.git.revision >>"
+      #       echo "This is pipeline in_setup << pipeline.in_setup >>"
+      #       echo "This is pipeline trigger_source << pipeline.trigger_source >>"
+      #       echo "This is pipeline schedule name << pipeline.schedule.name >>"
+      #       echo "This is pipeline schedule id << pipeline.schedule.id >>"
+
+      - codecov/upload:
+          file: "./coverage/clover.xml"
+
+  lint:
+    <<: *container_config
+    steps:
       - run:
           name: Run Lint
           command: npm run lint
+
+  test:
+    <<: *container_config
+    steps:
       - run:
           name: Run Tests
           command: npm run test
+
+  build:
+    <<: *container_config
+    steps:
       - run:
           name: Run Build
           command: npm run build
+
+  generate_test_coverage:
+    <<: *container_config
+    steps:
       - run:
           name: Generate Coverage Report
           command: npm run test:coverage
 
-      # Run coverage report for Code Climate
+  setup_code_climate:
+    <<: *container_config
+    steps:
       - run:
           name: Setup Code Climate test-reporter
           command: |
@@ -71,6 +134,10 @@ jobs:
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
             ./cc-test-reporter before-build
+
+  send_coverage_report_code_climate:
+    <<: *container_config
+    steps:
       - run:
           name: Send coverage report to Code Climate
           command:
@@ -78,34 +145,23 @@ jobs:
             # which creates the .nyc_output folder containing necessary data
             ./cc-test-reporter after-build -t lcov
 
-      - run:
-          name: ECHO
-          command: |
-            echo "This is pipeline ID << pipeline.id >>"
-            echo "This is pipeline number << pipeline.number >>"
-            echo "This is pipeline git url << pipeline.project.git_url >>"
-            echo "This is pipeline type << pipeline.project.type >>"
-            echo "This is pipeline git tag << pipeline.git.tag >>"
-            echo "This is pipeline branch << pipeline.git.branch >>"
-            echo "This is pipeline revision << pipeline.git.revision >>"
-            echo "This is pipeline in_setup << pipeline.in_setup >>"
-            echo "This is pipeline trigger_source << pipeline.trigger_source >>"
-            echo "This is pipeline schedule name << pipeline.schedule.name >>"
-            echo "This is pipeline schedule id << pipeline.schedule.id >>"
-
+  upload_codecov:
+    <<: *container_config
+    steps:
       - codecov/upload:
           file: "./coverage/clover.xml"
 
   notify:
-    docker:
-      # - image: node:16.13.2
-      - image: 'cimg/base:stable'
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    <<: *notify_container_config
+    # docker:
+    #   # - image: node:16.13.2
+    #   - image: 'cimg/base:stable'
+    #     auth:
+    #       username: mydockerhub-user
+    #       password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - slack/notify:
-          channel: 'alerts, games'
+          channel: "alerts"
           event: pass
           mentions: "@here"
           template: basic_success_1
@@ -129,11 +185,18 @@ jobs:
 workflows:
   send-notification:
     jobs:
+      - install
+      - lint
+      - test
       - build
+      - generate_test_coverage
+      - setup_code_climate
+      - send_coverage_report_code_climate
+      - upload_codecov
       - notify:
           context: slack-secrets
           requires:
-            - build
+            - install
 # ---------------------------
 # upload_coverage:
 #   docker:
