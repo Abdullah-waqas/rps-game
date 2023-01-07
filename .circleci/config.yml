@@ -19,11 +19,11 @@ executors:
 references:
   container_config: &container_config
     executor: default
-    working_directory: ~/repo
+    # working_directory: ~/repo
 
   notify_container_config: &notify_container_config
     executor: notify
-    working_directory: ~/repo
+    # working_directory: ~/repo
 
 jobs:
   install:
@@ -186,17 +186,35 @@ workflows:
   send-notification:
     jobs:
       - install
-      - lint
-      - test
-      - build
-      - generate_test_coverage
-      - setup_code_climate
-      - send_coverage_report_code_climate
-      - upload_codecov
+      - lint:
+          requires:
+            - install
+      - test:
+          requires:
+                - install
+      - build:
+          requires:
+            - install
+      - generate_test_coverage:
+          requires:
+            - install
+            - test
+      - setup_code_climate:
+          requires:
+            - install
+            - test
+      - send_coverage_report_code_climate:
+          requires:
+            - install
+            - test
+      - upload_codecov:
+          requires:
+            - install
+            - test
       - notify:
           context: slack-secrets
           requires:
-            - install
+            - build
 # ---------------------------
 # upload_coverage:
 #   docker:
