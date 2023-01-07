@@ -256,8 +256,7 @@ workflows:
             - test
       - send_coverage_report_code_climate:
           requires:
-            # - install
-            - test
+            - generate_test_coverage
       - upload_codecov:
           requires:
             # - install
