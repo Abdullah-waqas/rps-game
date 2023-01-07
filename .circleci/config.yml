@@ -19,15 +19,15 @@ executors:
 references:
   container_config: &container_config
     executor: default
-    working_directory: ~/rps
+    working_directory: ~/repo
 
   notify_container_config: &notify_container_config
     executor: notify
-    working_directory: ~/rps
+    working_directory: ~/repo
 
   attach_workspace: &attach_workspace
     attach_workspace:
-      at: ~/rps
+      at: ~/repo
 
 jobs:
   install:
@@ -54,9 +54,9 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # - run:
-      #     name: Run Lint
-      #     command: npm run lint
+      - run:
+          name: Run Lint
+          command: npm run lint
       # - run:
       #     name: Run Tests
       #     command: npm run test
@@ -101,41 +101,61 @@ jobs:
       #     file: "./coverage/clover.xml"
 
   lint:
-    <<: *container_config
+    # <<: *container_config
+    docker:
+      - image: node:16.13.2
+
+    working_directory: ~/repo
     steps:
-      - *attach_workspace
+      # - *attach_workspace
       - run:
           name: Run Lint
           command: npm run lint
 
   test:
-    <<: *container_config
+    # <<: *container_config
+    docker:
+      - image: node:16.13.2
+
+    working_directory: ~/repo
     steps:
-      - *attach_workspace
+      # - *attach_workspace
       - run:
           name: Run Tests
           command: npm run test
 
   build:
-    <<: *container_config
+    # <<: *container_config
+    docker:
+      - image: node:16.13.2
+
+    working_directory: ~/repo
     steps:
-      - *attach_workspace
+      # - *attach_workspace
       - run:
           name: Run Build
           command: npm run build
 
   generate_test_coverage:
-    <<: *container_config
+    # <<: *container_config
+    docker:
+      - image: node:16.13.2
+
+    working_directory: ~/repo
     steps:
-      - *attach_workspace
+      # - *attach_workspace
       - run:
           name: Generate Coverage Report
           command: npm run test:coverage
 
   setup_code_climate:
-    <<: *container_config
+    # <<: *container_config
+    docker:
+      - image: node:16.13.2
+
+    working_directory: ~/repo
     steps:
-      - *attach_workspace
+      # - *attach_workspace
       - run:
           name: Setup Code Climate test-reporter
           command: |
@@ -145,9 +165,13 @@ jobs:
             ./cc-test-reporter before-build
 
   send_coverage_report_code_climate:
-    <<: *container_config
+    # <<: *container_config
+    docker:
+      - image: node:16.13.2
+
+    working_directory: ~/repo
     steps:
-      - *attach_workspace
+      # - *attach_workspace
       - run:
           name: Send coverage report to Code Climate
           command:
@@ -156,9 +180,13 @@ jobs:
             ./cc-test-reporter after-build -t lcov
 
   upload_codecov:
-    <<: *container_config
+    # <<: *container_config
+    docker:
+      - image: node:16.13.2
+
+    working_directory: ~/repo
     steps:
-      - *attach_workspace
+      # - *attach_workspace
       - codecov/upload:
           file: "./coverage/clover.xml"
 
