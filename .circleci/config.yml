@@ -119,47 +119,51 @@ jobs:
           command: npm run lint
 
   test:
-    # <<: *container_config
-    docker:
-      - image: node:16.13.2
+    <<: *container_config
+    # docker:
+    #   - image: node:16.13.2
 
-    working_directory: ~/repo
+    # working_directory: ~/repo
+    resource_class: large
     steps:
-      # - *attach_workspace
+      - *attach_workspace
       - run:
           name: Run Tests
           command: npm run test
 
   build:
-    # <<: *container_config
-    docker:
-      - image: node:16.13.2
+    <<: *container_config
+    # docker:
+    #   - image: node:16.13.2
 
-    working_directory: ~/repo
+    # working_directory: ~/repo
+    resource_class: large
     steps:
-      # - *attach_workspace
+      - *attach_workspace
       - run:
           name: Run Build
           command: npm run build
 
   generate_test_coverage:
-    # <<: *container_config
-    docker:
-      - image: node:16.13.2
+    <<: *container_config
+    resource_class: large
+    # docker:
+    #   - image: node:16.13.2
 
-    working_directory: ~/repo
+    # working_directory: ~/repo
     steps:
-      # - *attach_workspace
+      - *attach_workspace
       - run:
           name: Generate Coverage Report
           command: npm run test:coverage
 
   setup_code_climate:
-    # <<: *container_config
-    docker:
-      - image: node:16.13.2
+    <<: *container_config
+    # docker:
+    #   - image: node:16.13.2
 
-    working_directory: ~/repo
+    # working_directory: ~/repo
+    resource_class: large
     steps:
       # - *attach_workspace
       - run:
@@ -171,13 +175,14 @@ jobs:
             ./cc-test-reporter before-build
 
   send_coverage_report_code_climate:
-    # <<: *container_config
-    docker:
-      - image: node:16.13.2
+    <<: *container_config
+    # docker:
+    #   - image: node:16.13.2
 
-    working_directory: ~/repo
+    # working_directory: ~/repo
+    resource_class: large
     steps:
-      # - *attach_workspace
+      - *attach_workspace
       - run:
           name: Send coverage report to Code Climate
           command:
@@ -186,13 +191,14 @@ jobs:
             ./cc-test-reporter after-build -t lcov
 
   upload_codecov:
-    # <<: *container_config
-    docker:
-      - image: node:16.13.2
+    <<: *container_config
+    # docker:
+    #   - image: node:16.13.2
 
-    working_directory: ~/repo
+    # working_directory: ~/repo
+    resource_class: large
     steps:
-      # - *attach_workspace
+      - *attach_workspace
       - codecov/upload:
           file: "./coverage/clover.xml"
 
