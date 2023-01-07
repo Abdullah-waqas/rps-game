@@ -191,25 +191,25 @@ workflows:
             - install
       - test:
           requires:
-                - install
+            - lint
       - build:
           requires:
-            - install
+            - test
       - generate_test_coverage:
           requires:
-            - install
+            # - install
             - test
       - setup_code_climate:
           requires:
-            - install
+            # - install
             - test
       - send_coverage_report_code_climate:
           requires:
-            - install
+            # - install
             - test
       - upload_codecov:
           requires:
-            - install
+            # - install
             - test
       - notify:
           context: slack-secrets
