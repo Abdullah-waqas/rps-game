@@ -232,7 +232,7 @@ workflows:
       - setup_code_climate:
           requires:
             # - install
-            - test
+            - generate_test_coverage
       # - send_coverage_report_code_climate:
       #     requires:
       #       - generate_test_coverage
