@@ -61,7 +61,7 @@ jobs:
   lint:
     <<: *container_config
     steps:
-      - *attach_workspace
+      # - *attach_workspace
       - run:
           name: Run Lint
           command: npm run lint
