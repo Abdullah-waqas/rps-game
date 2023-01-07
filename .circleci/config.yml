@@ -3,12 +3,35 @@ orbs:
   node: circleci/node@3.0.0
   codecov: codecov/codecov@3
   slack: circleci/slack@4.9.3
-jobs:
-  build:
+
+executors:
+  default:
     docker:
       - image: node:16.13.2
 
+  notify:
+    docker:
+      - image: 'cimg/base:stable'
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+
+references:
+  container_config: &container_config
+    executor: default
     working_directory: ~/repo
+
+  notify_container_config: &notify_container_config
+    executor: notify
+    working_directory: ~/repo
+
+jobs:
+  build:
+    # docker:
+    #   - image: node:16.13.2
+
+    # working_directory: ~/repo
+    <<: *container_config
 
     steps:
       - checkout
@@ -108,9 +131,9 @@ workflows:
     jobs:
       - build
       - notify:
+          context: slack-secrets
           requires:
             - build
-          context: slack-secrets
 # ---------------------------
 # upload_coverage:
 #   docker:
