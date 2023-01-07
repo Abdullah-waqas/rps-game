@@ -19,11 +19,15 @@ executors:
 references:
   container_config: &container_config
     executor: default
-    # working_directory: ~/repo
+    working_directory: ~/rps
 
   notify_container_config: &notify_container_config
     executor: notify
-    # working_directory: ~/repo
+    working_directory: ~/rps
+
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: ~/rps
 
 jobs:
   install:
@@ -93,12 +97,13 @@ jobs:
       #       echo "This is pipeline schedule name << pipeline.schedule.name >>"
       #       echo "This is pipeline schedule id << pipeline.schedule.id >>"
 
-      - codecov/upload:
-          file: "./coverage/clover.xml"
+      # - codecov/upload:
+      #     file: "./coverage/clover.xml"
 
   lint:
     <<: *container_config
     steps:
+      - *attach_workspace
       - run:
           name: Run Lint
           command: npm run lint
@@ -106,6 +111,7 @@ jobs:
   test:
     <<: *container_config
     steps:
+      - *attach_workspace
       - run:
           name: Run Tests
           command: npm run test
@@ -113,6 +119,7 @@ jobs:
   build:
     <<: *container_config
     steps:
+      - *attach_workspace
       - run:
           name: Run Build
           command: npm run build
@@ -120,6 +127,7 @@ jobs:
   generate_test_coverage:
     <<: *container_config
     steps:
+      - *attach_workspace
       - run:
           name: Generate Coverage Report
           command: npm run test:coverage
@@ -127,6 +135,7 @@ jobs:
   setup_code_climate:
     <<: *container_config
     steps:
+      - *attach_workspace
       - run:
           name: Setup Code Climate test-reporter
           command: |
@@ -138,6 +147,7 @@ jobs:
   send_coverage_report_code_climate:
     <<: *container_config
     steps:
+      - *attach_workspace
       - run:
           name: Send coverage report to Code Climate
           command:
@@ -148,6 +158,7 @@ jobs:
   upload_codecov:
     <<: *container_config
     steps:
+      - *attach_workspace
       - codecov/upload:
           file: "./coverage/clover.xml"
 
