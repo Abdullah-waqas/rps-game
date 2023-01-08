@@ -2,13 +2,36 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.0
   codecov: codecov/codecov@3
-jobs:
-  build:
+  slack: circleci/slack@4.9.3
+
+executors:
+  default:
     docker:
       - image: node:16.13.2
 
+  notify:
+    docker:
+      - image: "cimg/base:stable"
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD # context / project UI env-var reference
+
+references:
+  container_config: &container_config
+    executor: default
     working_directory: ~/repo
 
+  notify_container_config: &notify_container_config
+    executor: notify
+    working_directory: ~/repo
+
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: ~/repo
+
+jobs:
+  install:
+    <<: *container_config
     steps:
       - checkout
 
@@ -26,20 +49,47 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
       - run:
           name: Run Lint
           command: npm run lint
+
+  lint:
+    <<: *container_config
+    steps:
+      - *attach_workspace
+      - run:
+          name: Run Lint
+          command: npm run lint
+
+  test:
+    <<: *container_config
+    steps:
+      - *attach_workspace
       - run:
           name: Run Tests
           command: npm run test
+
+  build:
+    <<: *container_config
+    steps:
+      - *attach_workspace
       - run:
           name: Run Build
           command: npm run build
+
+  generate_test_coverage:
+    <<: *container_config
+    steps:
+      - *attach_workspace
       - run:
           name: Generate Coverage Report
           command: npm run test:coverage
-
-      # Run coverage report for Code Climate
+      # TODO: Needs to move in separate workflow
       - run:
           name: Setup Code Climate test-reporter
           command: |
@@ -47,14 +97,105 @@ jobs:
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
             ./cc-test-reporter before-build
-          when: always
+
       - run:
           name: Send coverage report to Code Climate
           command:
             # nyc report requires that nyc has already been run,
             # which creates the .nyc_output folder containing necessary data
             ./cc-test-reporter after-build -t lcov
-          when: always
 
+  setup_code_climate:
+    <<: *container_config
+    steps:
+      - *attach_workspace
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            # download test reporter as a static binary
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+            ./cc-test-reporter before-build
+
+      - run:
+          name: Send coverage report to Code Climate
+          command:
+            # nyc report requires that nyc has already been run,
+            # which creates the .nyc_output folder containing necessary data
+            ./cc-test-reporter after-build -t lcov
+
+  send_coverage_report_code_climate:
+    <<: *container_config
+    steps:
+      - *attach_workspace
+      - run:
+          name: Send coverage report to Code Climate
+          command:
+            # nyc report requires that nyc has already been run,
+            # which creates the .nyc_output folder containing necessary data
+            ./cc-test-reporter after-build -t lcov
+
+  upload_codecov:
+    <<: *container_config
+    steps:
+      - *attach_workspace
       - codecov/upload:
           file: "./coverage/clover.xml"
+
+  notify:
+    <<: *notify_container_config
+    steps:
+      - slack/notify:
+          channel: "alerts"
+          event: pass
+          mentions: "@here"
+          template: basic_success_1
+          # custom: |
+          #   {
+          #     "blocks": [
+          #       {
+          #         "type": "section",
+          #         "fields": [
+          #           {
+          #             "type": "plain_text",
+          #             "text": "*This is a text notification*",
+          #             "emoji": true
+          #           }
+          #         ]
+          #       }
+          #     ]
+          #   }
+          # event: always
+
+workflows:
+  send-notification:
+    jobs:
+      - install
+      - lint:
+          requires:
+            - install
+      - test:
+          requires:
+            - lint
+      - build:
+          requires:
+            - test
+      - generate_test_coverage:
+          requires:
+            # - install
+            - test
+      # - setup_code_climate:
+      #     requires:
+      #       # - install
+      #       - generate_test_coverage
+      # - send_coverage_report_code_climate:
+      #     requires:
+      #       - generate_test_coverage
+      - upload_codecov:
+          requires:
+            # - install
+            - generate_test_coverage
+      - notify:
+          context: slack-secrets
+          requires:
+            - build
